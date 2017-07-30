@@ -1,0 +1,73 @@
+# Utilizando sintaxe da versão 3:
+version: "3"
+
+#Criando volume
+volumes:
+    datadb:
+        #Determina que não o Docker naõ precisa procurar por volume externo criado.
+        external: false
+
+#Containers que serão criados
+services:
+    ###########################
+    # Container Servidor Web (Nginx)
+    ###########################
+    nginx:
+        #Determina a imagem a ser utilizada
+        image: nginx:latest
+        #Determina o nome do container
+        container_name: nginx
+        ports:
+            #Habilita porta no HOST:CONTAINER
+            - 80:80
+        depends_on:
+            #Cria uma dependencia de container
+            - php
+        volumes:
+            #Determina volume relativo HOST:CONTAINER
+            - ./public:/var/www/html
+            - ./src/nginx/default.conf:/etc/nginx/conf.d/default.conf
+            - ./src/nginx/log/:/var/log/nginx/
+
+    ###########################
+    # Container PHP
+    ###########################
+    php:
+        #Determina a imagem a ser utilizada
+        build:
+            context: ./src/php/
+        #Determina o nome do container
+        container_name: php
+        expose:
+            #Habilita a porta somente entre os containers
+            - 9000
+        depends_on:
+            #Cria uma dependencia de container
+            - mariadb
+        volumes:
+            #Determina volume relativo HOST:CONTAINER
+            - ./public:/var/www/html
+
+    ###########################
+    # Container de banco de dados (MariaDB)
+    ###########################
+    mariadb:
+        #Determina a imagem a ser utilizada
+        image: mariadb:latest
+        #Determina o nome do container
+        container_name: mariadb
+        volumes:
+            #Link entre o volume criado e diretório no container
+            - datadb:/var/lib/mysql
+            #Determina volume relativo HOST:CONTAINER
+            #- ./src/mariadb:/var/lib/mysql
+        environment:
+            #Determina a senha de root no ambiente
+            MYSQL_ROOT_PASSWORD: 123456
+            #Criação de um usuário no ambiente
+            MYSQL_USER: projeto
+            #Determina a senha do usuário criado
+            MYSQL_PASSWORD: projeto
+        ports:
+            #Habilita porta no HOST:CONTAINER
+            - 3306:3306
