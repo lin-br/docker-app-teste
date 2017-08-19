@@ -1,3 +1,5 @@
 /src/mariadb/*
 /src/nginx/log/
 /public/
+.idea/
+src/mariadb/

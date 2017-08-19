@@ -39,9 +39,16 @@ services:
             context: ./src/php/
         #Determina o nome do container
         container_name: php
+        environment:
+            PHP_XDEBUG_ENABLED: 1
+            XDEBUG_CONFIG: remote_host=192.168.99.100
         expose:
             #Habilita a porta somente entre os containers
             - 9000
+        ports:
+            #Habilita porta no HOST:CONTAINER
+            #Utilizado neste container para que o Xdebug pudesse ser utilizado em uma IDE
+            - 9000:9000
         depends_on:
             #Cria uma dependencia de container
             - mariadb
