@@ -14,7 +14,8 @@ services:
     ###########################
     nginx:
         #Determina a imagem a ser utilizada
-        image: nginx:latest
+        build:
+            context: ./src/nginx
         #Determina o nome do container
         container_name: nginx
         ports:
@@ -61,7 +62,8 @@ services:
     ###########################
     mariadb:
         #Determina a imagem a ser utilizada
-        image: mariadb:latest
+        build:
+            context: ./src/mariadb
         #Determina o nome do container
         container_name: mariadb
         volumes:
