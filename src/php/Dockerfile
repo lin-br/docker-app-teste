@@ -20,6 +20,8 @@ RUN apt-get update && apt-get install -y \
     && echo "xdebug.remote_host = XDEBUG_CONFIG" >> /usr/local/etc/php/conf.d/xdebug.ini \
     && echo "xdebug.remote_autostart=1" >> /usr/local/etc/php/conf.d/xdebug.ini
 
+COPY php.ini /usr/local/etc/php/
+
 ENV TZ=America/Sao_Paulo
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
