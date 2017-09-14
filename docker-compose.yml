@@ -16,11 +16,16 @@ services:
         #Determina a imagem a ser utilizada
         build:
             context: ./src/nginx
+        #Determina o nome da imagem
+        image: sds/nginx
         #Determina o nome do container
         container_name: nginx
         ports:
             #Habilita porta no HOST:CONTAINER
             - 80:80
+        #Determina a rede que sera utilizada
+        networks:
+            - dev-network
         depends_on:
             #Cria uma dependencia de container
             - php
@@ -38,6 +43,8 @@ services:
         #Determina a imagem a ser utilizada
         build:
             context: ./src/php/
+        #Determina o nome da imagem
+        image: sds/php
         #Determina o nome do container
         container_name: php
         environment:
@@ -50,6 +57,9 @@ services:
             #Habilita porta no HOST:CONTAINER
             #Utilizado neste container para que o Xdebug pudesse ser utilizado em uma IDE
             - 9000:9000
+        #Determina a rede que sera utilizada
+        networks:
+            - dev-network
         depends_on:
             #Cria uma dependencia de container
             - mariadb
@@ -64,6 +74,8 @@ services:
         #Determina a imagem a ser utilizada
         build:
             context: ./src/mariadb
+        #Determina o nome da imagem
+        image: sds/mariadb
         #Determina o nome do container
         container_name: mariadb
         volumes:
@@ -81,3 +93,11 @@ services:
         ports:
             #Habilita porta no HOST:CONTAINER
             - 3306:3306
+        #Determina a rede que sera utilizada
+        networks:
+            - dev-network
+
+#Criando network
+networks:
+    dev-network:
+        driver: bridge
