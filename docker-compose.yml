@@ -1,103 +1,58 @@
-# Utilizando sintaxe da versão 3:
-version: "3"
-
-#Criando volume
+version: "3.6"
 volumes:
     datadb:
-        #Determina que não o Docker naõ precisa procurar por volume externo criado.
         external: false
-
-#Containers que serão criados
 services:
-    ###########################
-    # Container Servidor Web (Nginx)
-    ###########################
     nginx:
-        #Determina a imagem a ser utilizada
         build:
             context: ./src/nginx
-        #Determina o nome da imagem
         image: sds/nginx
-        #Determina o nome do container
-        container_name: nginx
+        container_name: nginx-$COMPOSE_PROJECT_NAME
         ports:
-            #Habilita porta no HOST:CONTAINER
             - 80:80
-        #Determina a rede que sera utilizada
         networks:
-            - dev-network
+            - developer-network
         depends_on:
-            #Cria uma dependencia de container
             - php
         volumes:
-            #Determina volume relativo HOST:CONTAINER
             - ./public:/var/www/html
             - ./src/nginx/nginx.conf:/etc/nginx/nginx.conf
             - ./src/nginx/default.conf:/etc/nginx/conf.d/default.conf
             - ./src/nginx/log/:/var/log/nginx/
-
-    ###########################
-    # Container PHP
-    ###########################
     php:
-        #Determina a imagem a ser utilizada
         build:
             context: ./src/php/
-        #Determina o nome da imagem
         image: sds/php
-        #Determina o nome do container
-        container_name: php
+        container_name: php-$COMPOSE_PROJECT_NAME
         environment:
             PHP_XDEBUG_ENABLED: 1
             XDEBUG_CONFIG: remote_host=192.168.99.100
         expose:
-            #Habilita a porta somente entre os containers
             - 9000
         ports:
-            #Habilita porta no HOST:CONTAINER
-            #Utilizado neste container para que o Xdebug pudesse ser utilizado em uma IDE
             - 9000:9000
-        #Determina a rede que sera utilizada
         networks:
-            - dev-network
+            - developer-network
         depends_on:
-            #Cria uma dependencia de container
             - mariadb
         volumes:
-            #Determina volume relativo HOST:CONTAINER
             - ./public:/var/www/html
-
-    ###########################
-    # Container de banco de dados (MariaDB)
-    ###########################
     mariadb:
-        #Determina a imagem a ser utilizada
         build:
             context: ./src/mariadb
-        #Determina o nome da imagem
         image: sds/mariadb
-        #Determina o nome do container
-        container_name: mariadb
+        container_name: mariadb-$COMPOSE_PROJECT_NAME
         volumes:
-            #Link entre o volume criado e diretório no container
             - datadb:/var/lib/mysql
-            #Determina volume relativo HOST:CONTAINER
-            #- ./src/mariadb:/var/lib/mysql
         environment:
-            #Determina a senha de root no ambiente
             MYSQL_ROOT_PASSWORD: 123456
-            #Criação de um usuário no ambiente
             MYSQL_USER: projeto
-            #Determina a senha do usuário criado
             MYSQL_PASSWORD: projeto
         ports:
-            #Habilita porta no HOST:CONTAINER
             - 3306:3306
-        #Determina a rede que sera utilizada
         networks:
-            - dev-network
-
-#Criando network
+            - developer-network
 networks:
-    dev-network:
+    developer-network:
         driver: bridge
+        name: developer-network-$COMPOSE_PROJECT_NAME
