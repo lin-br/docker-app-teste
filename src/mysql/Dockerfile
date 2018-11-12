@@ -1,3 +1,3 @@
-FROM mariadb:latest
+FROM mysql:latest
 
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone

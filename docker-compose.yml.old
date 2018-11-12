@@ -36,15 +36,15 @@ services:
         networks:
             - app
         depends_on:
-            - mysql
+            - mariadb
         volumes:
             - ./public:/var/www/html
         restart: unless-stopped
-    mysql:
+    mariadb:
         build:
-            context: ./src/mysql
-        image: lin/mysql-${COMPOSE_PROJECT_NAME}
-        container_name: mysql-${COMPOSE_PROJECT_NAME}
+            context: ./src/mariadb
+        image: lin/mariadb-${COMPOSE_PROJECT_NAME}
+        container_name: mariadb-${COMPOSE_PROJECT_NAME}
         volumes:
             - datadb:/var/lib/mysql
         env_file:

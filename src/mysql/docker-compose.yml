@@ -1,0 +1,23 @@
+version: "3.6"
+volumes:
+  mysql-data:
+    driver: local
+  mysql-log:
+    driver: local
+  mysql-conf:
+    driver: local
+services:
+  mysql:
+    build:
+      context: .
+    image: lin-br/mysql:${VERSION}
+    container_name: mysql-${VERSION}
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - mysql-log:/var/log/mysql
+      - mysql-conf:/etc/mysql/conf.d
+    env_file:
+      - ./.env
+    ports:
+      - 3306:3306
+    restart: unless-stopped

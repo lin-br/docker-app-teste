@@ -1,0 +1,4 @@
+2018/11/01 12:23:50 [error] 8#8: *2 directory index of "/var/www/html/" is forbidden, client: 172.18.0.1, server: docker.dev, request: "GET / HTTP/1.1", host: "localhost"
+2018/11/01 12:24:33 [error] 8#8: *2 directory index of "/var/www/html/" is forbidden, client: 172.18.0.1, server: docker.dev, request: "GET / HTTP/1.1", host: "localhost"
+2018/11/01 12:24:37 [error] 8#8: *2 directory index of "/var/www/html/" is forbidden, client: 172.18.0.1, server: docker.dev, request: "GET / HTTP/1.1", host: "localhost"
+2018/11/01 12:25:35 [error] 8#8: *2 directory index of "/var/www/html/" is forbidden, client: 172.18.0.1, server: docker.dev, request: "GET / HTTP/1.1", host: "localhost"
