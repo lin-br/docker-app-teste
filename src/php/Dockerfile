@@ -1,4 +1,7 @@
-FROM php:7.2.3-fpm
+ARG TIMEZONE
+ARG IMAGE_PHP
+
+FROM php:${IMAGE_PHP}
 
 RUN apt-get update && apt-get install -y \
         libfreetype6-dev \
@@ -23,7 +26,7 @@ RUN apt-get update && apt-get install -y \
 
 COPY php.ini /usr/local/etc/php/
 
-ENV TZ=America/Sao_Paulo
+ENV TZ=${TIMEZONE}
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 EXPOSE 9000

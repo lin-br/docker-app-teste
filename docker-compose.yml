@@ -6,12 +6,14 @@ services:
     nginx:
         build:
             context: ./src/nginx
-        image: sds/nginx
+            args:
+                    TIMEZONE: $TIMEZONE
+                    IMAGE_NGINX: $IMAGE_NGINX
         container_name: nginx-$COMPOSE_PROJECT_NAME
         ports:
             - 80:80
         networks:
-            - developer-network
+            - docker-app
         depends_on:
             - php
         volumes:
@@ -22,7 +24,9 @@ services:
     php:
         build:
             context: ./src/php/
-        image: sds/php
+            args:
+                    TIMEZONE: $TIMEZONE
+                    IMAGE_PHP: $IMAGE_PHP
         container_name: php-$COMPOSE_PROJECT_NAME
         environment:
             PHP_XDEBUG_ENABLED: 1
@@ -32,7 +36,7 @@ services:
         ports:
             - 9000:9000
         networks:
-            - developer-network
+            - docker-app
         depends_on:
             - mariadb
         volumes:
@@ -40,7 +44,9 @@ services:
     mariadb:
         build:
             context: ./src/mariadb
-        image: sds/mariadb
+            args:
+                    TIMEZONE: $TIMEZONE
+                    IMAGE_MARIADB: $IMAGE_MARIADB
         container_name: mariadb-$COMPOSE_PROJECT_NAME
         volumes:
             - datadb:/var/lib/mysql
@@ -51,8 +57,8 @@ services:
         ports:
             - 3306:3306
         networks:
-            - developer-network
+            - docker-app
 networks:
-    developer-network:
+    docker-app:
         driver: bridge
-        name: developer-network-$COMPOSE_PROJECT_NAME
+        name: docker-$COMPOSE_PROJECT_NAME
