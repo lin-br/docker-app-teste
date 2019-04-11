@@ -7,8 +7,7 @@ services:
         build:
             context: ./src/nginx
             args:
-                    TIMEZONE: $TIMEZONE
-                    IMAGE_NGINX: $IMAGE_NGINX
+                IMAGE_NGINX: $IMAGE_NGINX
         container_name: nginx-$COMPOSE_PROJECT_NAME
         ports:
             - 80:80
@@ -25,12 +24,12 @@ services:
         build:
             context: ./src/php/
             args:
-                    TIMEZONE: $TIMEZONE
-                    IMAGE_PHP: $IMAGE_PHP
+                IMAGE_PHP: $IMAGE_PHP
         container_name: php-$COMPOSE_PROJECT_NAME
         environment:
             PHP_XDEBUG_ENABLED: 1
             XDEBUG_CONFIG: remote_host=192.168.99.100
+            TIME_ZONE: $TIME_ZONE
         expose:
             - 9000
         ports:
@@ -45,8 +44,7 @@ services:
         build:
             context: ./src/mariadb
             args:
-                    TIMEZONE: $TIMEZONE
-                    IMAGE_MARIADB: $IMAGE_MARIADB
+                IMAGE_MARIADB: $IMAGE_MARIADB
         container_name: mariadb-$COMPOSE_PROJECT_NAME
         volumes:
             - datadb:/var/lib/mysql

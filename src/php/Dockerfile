@@ -1,4 +1,3 @@
-ARG TIMEZONE
 ARG IMAGE_PHP
 
 FROM php:${IMAGE_PHP}
@@ -25,8 +24,5 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/cache/apt/*
 
 COPY php.ini /usr/local/etc/php/
-
-ENV TZ=${TIMEZONE}
-RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 EXPOSE 9000
